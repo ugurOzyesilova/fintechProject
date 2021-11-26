@@ -1,23 +1,33 @@
-import logo from './logo.svg';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import Content from "./components/Content"
+import Nav from "./components/Nav"
+import React, {useState, useEffect} from 'react';
+import axios from "axios";
 
-function App() {
+const App = () =>  {
+
+
+    const [allData, setAllData] = useState([]);
+    
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const { data } = await axios("https://restcountries.com/v2/all");
+            setAllData(data);
+        }
+        fetchData()
+    }, []);
+    
+    // console.log(allData); consele log all the Datas
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     <Nav/>
+     <Content
+       data = {allData} //I am passing all data stored in endpoint.
+       setData = {setAllData}
+     />
     </div>
   );
 }
